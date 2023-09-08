@@ -1,15 +1,16 @@
 package LiveObjects.Plant;
 
+import Field.Cell;
 import LiveObjects.Alive;
-import LiveObjects.Animal.Animal;
 
 public class Plant extends Alive {
 
-    public Plant(){
+    public Plant(Cell position){
+        super(position);
     }
 
     @Override
     public Plant reproduce() {
-        return new Plant();
+        return new Plant(this.getCurrentPosition());
     }
 }

@@ -1,6 +1,7 @@
 import Field.Field;
 import Field.Cell;
 import LiveObjects.Alive;
+import LiveObjects.Animal.Herbivore.Horse;
 import LiveObjects.Animal.Predator.Wolf;
 import LiveObjects.AnimalConstants;
 
@@ -11,11 +12,10 @@ public class Main {
         Field island = new Field(10, 10);
         Cell cell = new Cell();
         Alive wolf= new Wolf(cell);
-        cell.addRepresentative(new Wolf(cell));
+        Alive horse = new Horse(cell);
         System.out.println(cell.toString());
-        for (String s:cell.getRepresentatives().keySet()) {
-            System.out.println(s);
-        }
-        System.out.println();
+        System.out.println("kill the wolf");
+        wolf.die();
+        System.out.println(cell.toString());
     }
 }

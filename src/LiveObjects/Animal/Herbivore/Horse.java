@@ -2,13 +2,12 @@ package LiveObjects.Animal.Herbivore;
 
 import Field.Cell;
 
-public class Horse extends Herbivore{
-    {
+import java.util.Set;
 
-    }
+public class Horse extends Herbivore{
+
     public Horse(Cell currentPosition) {
         super(currentPosition);
-
     }
 
     @Override
@@ -22,4 +21,6 @@ public class Horse extends Herbivore{
         getCurrentPosition().addRepresentative(child);
         return child;
     }
+
+
 }

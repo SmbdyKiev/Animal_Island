@@ -2,10 +2,7 @@ package Field;
 
 import LiveObjects.Alive;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class Cell {
     @Override
@@ -18,23 +15,28 @@ public class Cell {
         return s;
     }
 
-    private Map<String, Set<Alive>> representatives;
+    private Map<String, List<Alive>> representatives;
+    private List<Cell> neighbors;
     public void addRepresentative(Alive representative){
         if (representatives == null) representatives = new HashMap<>();
-        Set set = representatives.get(representative.getKeyName());
-        if (set==null) set=new HashSet<>();
-        set.add(representative);
-        representatives.put(representative.getKeyName(), set);
+        List<Alive> list = representatives.get(representative.getKeyName());
+        if (list==null) list=new ArrayList<>();
+        list.add(representative);
+        representatives.put(representative.getKeyName(), list);
     }
 
-    public Set<Cell> getNeiborhods(Field field){
-        return new HashSet<>();//todo return near cells
+    public void addNeighbors(Cell cell){
+        this.neighbors.add(cell);
+    }
+
+    public List<Cell> getNeighbors(){
+        return neighbors;
     }
 
     public void removeRepresentative(Alive representative){
-        Set <Alive> alive = representatives.get(representative.getKeyName());
+        List <Alive> alive = representatives.get(representative.getKeyName());
         if (alive != null) alive.remove(representative);
         representatives.put(representative.getKeyName(),alive);
     }
-    public Map<String, Set<Alive>> getRepresentatives(){return representatives;}
+    public Map<String, List<Alive>> getRepresentatives(){return representatives;}
 }

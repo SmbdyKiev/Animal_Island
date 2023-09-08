@@ -1,7 +1,7 @@
 package Interfaces;
 
-import java.util.Set;
+import java.util.List;
 
 public interface Movable <T>{
-   T move(Set<T> avaliablePlaces);
+   T move(List<T> avaliablePlaces);
 }

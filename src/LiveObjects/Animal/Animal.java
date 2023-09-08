@@ -4,14 +4,14 @@ import Field.Cell;
 import Interfaces.Movable;
 import LiveObjects.Alive;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import java.util.Set;
-import java.util.random.RandomGenerator;
+
+
 
 public abstract class Animal extends Alive implements Movable <Cell>, Runnable{
     private Map<Alive,Integer> eatenFoodPercents;
-    private Cell currentPosition;
 
     public Map<Alive, Integer> getEatenFoodPercents() {
         return eatenFoodPercents;
@@ -21,34 +21,26 @@ public abstract class Animal extends Alive implements Movable <Cell>, Runnable{
         this.eatenFoodPercents = eatenFoodPercents;
     }
 
-    public Cell getCurrentPosition() {
-        return currentPosition;
+
+
+    public Animal (Cell position) {
+        super(position);
     }
 
-    public void setCurrentPosition(Cell currentPosition) {
-        this.currentPosition = currentPosition;
-        currentPosition.addRepresentative(this);
-    }
-
-    public Animal (Cell currentPosition) {
-        this.currentPosition = currentPosition;
-        currentPosition.addRepresentative(this);
-    }
-
-    @Override
-    public Cell move(Set<Cell> availablePlaces) {
-        if (availablePlaces == null) return currentPosition;
+    public Cell move(List<Cell> availablePlaces) {
+        if (availablePlaces == null) return this.getCurrentPosition();
         else {
             Random random =new Random();
-            Cell[] array = (Cell[]) availablePlaces.toArray();
-            currentPosition.removeRepresentative(this);
-            currentPosition = array[random.nextInt(availablePlaces.size())];
-            currentPosition.addRepresentative(this);
-            return currentPosition;
+            for (int i=0;i<getMovementSpeed();i++){
+                getCurrentPosition().removeRepresentative(this);
+                setCurrentPosition(availablePlaces.get(random.nextInt(availablePlaces.size())));
+            }
+            return getCurrentPosition();
         }
     }
 
     public void eat(Alive food) {
+
         food.die();
     }
 
