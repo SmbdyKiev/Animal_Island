@@ -30,8 +30,6 @@ public class Wolf extends Predator{
 
     }
 
-
-
     @Override
     public void reproduce() {
         if (getCurrentPosition().getRepresentatives().get(this.getIcon()).size() < this.getMaxRepresentatives()){
