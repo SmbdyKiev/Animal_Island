@@ -7,7 +7,7 @@ import java.util.Set;
 
 public abstract class Predator extends Animal {
 
-    public Predator(Cell currentPosition) {
-        super(currentPosition);
+    public Predator(Cell currentPosition, String icon) {
+        super(currentPosition,icon);
     }
 }
