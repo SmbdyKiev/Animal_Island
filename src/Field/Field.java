@@ -16,7 +16,7 @@ public class Field {
     }
 
     public String getCellStatus(int x, int y){
-        if (x<width && y<height) return "Cell ("+x+";"+y+") has next representatives:\n"+cells[x][y].toString();
+        if ((x < width) && (y < height)) return "Cell (" + x + ";" + y + ") has next representatives:\n" + cells[x][y].toString();
         else return "incorrect cell address\n";
     }
 }

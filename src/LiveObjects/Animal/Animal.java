@@ -1,81 +1,83 @@
 package LiveObjects.Animal;
-
 import Field.Cell;
 import Interfaces.Movable;
 import LiveObjects.Alive;
-import LiveObjects.Animal.Predator.Wolf;
-
+import LiveObjects.AnimalConstants;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.random.RandomGenerator;
 
-
-public abstract class Animal extends Alive implements Movable <Cell>{
-    private Map<String,Integer> eatenFoodPercents;
-
+public abstract class Animal extends Alive implements Movable<Cell> {
+    private Map<String, Integer> eatenFoodPercents;
+    public Animal(Cell position, String icon) {
+        super(position, icon);
+    }
     public Map<String, Integer> getEatenFoodPercents() {
         return eatenFoodPercents;
     }
-
     public void setEatenFoodPercents(Map<String, Integer> eatenFoodPercents) {
         this.eatenFoodPercents = eatenFoodPercents;
     }
-
-
-
-    public Animal (Cell position, String icon) {
-        super(position,icon);
-    }
-
     public Cell move(List<Cell> availablePlaces) {
         if (availablePlaces == null) return this.getCurrentPosition();
         else {
-            Random random =new Random();
-            for (int i=0;i<getMovementSpeed();i++){
+            for (int i = 0; i < getMovementSpeed(); i++) {
                 getCurrentPosition().removeRepresentative(this);
-                setCurrentPosition(availablePlaces.get(random.nextInt(availablePlaces.size())));
+                setCurrentPosition(availablePlaces.get(AnimalConstants.generator.nextInt(availablePlaces.size())));
             }
             return getCurrentPosition();
         }
     }
-
-    public Alive findFood(){
-        ConcurrentHashMap<String,List<Alive>> allAlivesInLocation =getCurrentPosition().getRepresentatives();
-        Set <String> menu=getEatenFoodPercents().keySet();
-        for (String s:menu) {
-            List <Alive> list = allAlivesInLocation.get(s);
-            if (RandomGenerator.getDefault().nextInt(100)<eatenFoodPercents.get(s))
-            return list.get(list.size()-1);
-
+    public Alive findFood() {
+        ConcurrentHashMap<String, ConcurrentLinkedDeque<Alive>> allAliveInLocation = getCurrentPosition().getRepresentatives();
+        Set<String> menu = getEatenFoodPercents().keySet();
+        for (String eatenAlive : menu) {
+            ConcurrentLinkedDeque<Alive> currentAlivesToEat = allAliveInLocation.get(eatenAlive);
+            if (currentAlivesToEat != null) {
+                for (Alive food : currentAlivesToEat) {
+                    int chanceToEatSelectedFood = AnimalConstants.generator.nextInt(100);
+                    System.out.println(this.getIcon() + " will eat? Random value is " + chanceToEatSelectedFood);
+                    if (chanceToEatSelectedFood < eatenFoodPercents.get(eatenAlive)) {
+                        return food;
+                    }
+                }
+            }
         }
-
         return null;
     }
     public void eat() {
-        double eatenFoodWeight=0.0;
-        boolean thereIsFood=true;
-        while (eatenFoodWeight<this.getMinFood()&&thereIsFood){
-            Alive food=findFood();
-            if (food!=null){
-                eatenFoodWeight+=food.getWeight();
-                System.out.println(this.getIcon()+ " just have eat "+ food.getIcon());
+        double eatenFoodWeight = 0.0;
+        boolean thereIsFood = true;
+        while ((this.isAlive()) && (eatenFoodWeight < this.getMinFood()) && thereIsFood) {
+            Alive food = findFood();
+            if (food != null) {
+                eatenFoodWeight += food.getWeight();
+                System.out.println(this.getIcon() + " just have eat " + food.getIcon()+" and it is "+ eatenFoodWeight+" from "+getMinFood());
                 food.die();
-            }
-            else {
-                thereIsFood=false;
+            } else {
+                thereIsFood = false;
+                System.out.println("no any food was found for " + this.getIcon());
             }
         }
-        if (eatenFoodWeight<this.getMinFood()) this.die();
-        else System.out.println(this.getIcon()+" Not hangry anymore");
+        if (eatenFoodWeight < this.getMinFood()) {
+            this.die();
+        }
+        else {
+            System.out.println(this.getIcon() + " not hangry anymore");
+        }
     }
     @Override
     public void run() {
-        while (isAlive()){
+        while (this.isAlive()) {
             eat();
             //move();
-            reproduce();
+            if (this.isAlive()) {reproduce();}
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                System.out.println("was interrupted");
+            }
         }
-
     }
-
 }

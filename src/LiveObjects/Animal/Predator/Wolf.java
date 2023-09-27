@@ -3,9 +3,9 @@ package LiveObjects.Animal.Predator;
 import Field.Cell;
 import LiveObjects.Alive;
 import LiveObjects.AnimalConstants;
-
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentLinkedDeque;
 
 public class Wolf extends Predator{
     public Wolf(Cell currentPosition) {
@@ -14,7 +14,7 @@ public class Wolf extends Predator{
         setMovementSpeed(AnimalConstants.AnimalParameters.WOLF.getMovementSpeed());
         setMaxRepresentatives(AnimalConstants.AnimalParameters.WOLF.getMaxRepresentatives());
         setMinFood(AnimalConstants.AnimalParameters.WOLF.getMinFood());
-        System.out.println("Created "+this.getIcon());
+        System.out.println("Created " + this.getIcon());
 
         Map<String,Integer> eatenFood = new HashMap<>();
         eatenFood.put(AnimalConstants.AnimalParameters.HORSE.getIcon(), 10);
@@ -29,14 +29,14 @@ public class Wolf extends Predator{
         setEatenFoodPercents(eatenFood);
 
     }
-
     @Override
     public void reproduce() {
-        if (getCurrentPosition().getRepresentatives().get(this.getIcon()).size() < this.getMaxRepresentatives()){
+        ConcurrentLinkedDeque allWolfesInLocation = getCurrentPosition().getRepresentatives().get(this.getIcon());
+        if ((allWolfesInLocation!=null) && (allWolfesInLocation.size() < this.getMaxRepresentatives()) ) {
             Alive wolf = new Wolf(getCurrentPosition());
             Thread thread = new Thread(wolf);
             thread.start();
+            System.out.println("New puppy! " + wolf.getIcon());
         }
-
     }
 }
