@@ -8,6 +8,7 @@ public class Cell {
     private volatile ConcurrentHashMap<String, ConcurrentLinkedDeque<Alive>> representatives;
     private List<Cell> neighbors;
     public void addNeighbors(Cell cell){
+        if (this.neighbors==null) {neighbors=new ArrayList<Cell>();}
         this.neighbors.add(cell);
     }
     public List<Cell> getNeighbors(){
@@ -23,18 +24,21 @@ public class Cell {
     public void removeRepresentative(Alive representative){
         if (representative != null) {
             String icon = representative.getIcon();
-            ConcurrentLinkedDeque<Alive> alive = representatives.get(icon);
+            if (representatives != null) {
+                ConcurrentLinkedDeque<Alive> alive = representatives.get(icon);
             if ((alive != null) && alive.contains(representative)) {
                 alive.remove(representative);
-                System.out.println(icon + " was removed for representatives");
+                System.out.println(icon + " was removed from representatives");
                 if (!alive.isEmpty()) {representatives.put(icon, alive);}
                 else representatives.remove(icon);
+            }
             }
         }
     }
     public ConcurrentHashMap<String, ConcurrentLinkedDeque<Alive>> getRepresentatives(){return representatives;}
     @Override
     public String toString() {
+        if (representatives.isEmpty()) {return "empty cell";}
         String resultString = "";
         Set<String> keys = representatives.keySet();
         for (String key:keys) {

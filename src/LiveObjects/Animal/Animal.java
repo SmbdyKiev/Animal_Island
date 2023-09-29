@@ -19,13 +19,20 @@ public abstract class Animal extends Alive implements Movable<Cell> {
     public void setEatenFoodPercents(Map<String, Integer> eatenFoodPercents) {
         this.eatenFoodPercents = eatenFoodPercents;
     }
-    public Cell move(List<Cell> availablePlaces) {
-        if (availablePlaces == null) return this.getCurrentPosition();
+    public Cell move() {
+        List<Cell> availablePlaces = this.getCurrentPosition().getNeighbors();
+        if (availablePlaces == null) {
+            System.out.println(this.getIcon() + " stays the same position");
+            return this.getCurrentPosition();
+        }
         else {
             for (int i = 0; i < getMovementSpeed(); i++) {
+                Cell newPosition = availablePlaces.get(AnimalConstants.generator.nextInt(availablePlaces.size()));
                 getCurrentPosition().removeRepresentative(this);
-                setCurrentPosition(availablePlaces.get(AnimalConstants.generator.nextInt(availablePlaces.size())));
+                newPosition.addRepresentative(this);
+                this.setCurrentPosition(newPosition);
             }
+            System.out.println(this.getIcon()+" get new position");
             return getCurrentPosition();
         }
     }
@@ -37,7 +44,6 @@ public abstract class Animal extends Alive implements Movable<Cell> {
             if (currentAlivesToEat != null) {
                 for (Alive food : currentAlivesToEat) {
                     int chanceToEatSelectedFood = AnimalConstants.generator.nextInt(100);
-                    System.out.println(this.getIcon() + " will eat? Random value is " + chanceToEatSelectedFood);
                     if (chanceToEatSelectedFood < eatenFoodPercents.get(eatenAlive)) {
                         return food;
                     }
@@ -64,14 +70,14 @@ public abstract class Animal extends Alive implements Movable<Cell> {
             this.die();
         }
         else {
-            System.out.println(this.getIcon() + " not hangry anymore");
+            System.out.println(this.getIcon() + " not hungry anymore");
         }
     }
     @Override
     public void run() {
         while (this.isAlive()) {
             eat();
-            //move();
+            if (this.isAlive()) {move();}
             if (this.isAlive()) {reproduce();}
             try {
                 Thread.sleep(1000);
