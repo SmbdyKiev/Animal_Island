@@ -1,6 +1,11 @@
 package LiveObjects;
 import Field.Cell;
 import Interfaces.Reproduceble;
+import LiveObjects.Animal.Predator.Wolf;
+
+import java.lang.reflect.Constructor;
+import java.util.concurrent.ConcurrentLinkedDeque;
+
 public abstract class Alive implements Reproduceble, Runnable {
     private boolean alive =true;
     private double weight;
@@ -51,9 +56,10 @@ public abstract class Alive implements Reproduceble, Runnable {
     public void setMinFood(double minFood) {
         this.minFood = minFood;
     }
-    public void die(){
+    public void die() {
         currentPosition.removeRepresentative(this);
         alive = false;
     }
     public boolean isAlive() {return alive;}
+
 }

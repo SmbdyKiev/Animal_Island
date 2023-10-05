@@ -2,6 +2,7 @@ package LiveObjects.Animal.Predator;
 
 import Field.Cell;
 import LiveObjects.Alive;
+import LiveObjects.Animal.Herbivore.Hog;
 import LiveObjects.AnimalConstants;
 import java.util.HashMap;
 import java.util.Map;
@@ -17,7 +18,7 @@ public class Wolf extends Predator{
         System.out.println("Created " + this.getIcon());
 
         Map<String,Integer> eatenFood = new HashMap<>();
-        eatenFood.put(AnimalConstants.AnimalParameters.HORSE.getIcon(), 10);
+        eatenFood.put(AnimalConstants.AnimalParameters.BULL.getIcon(), 10);
         eatenFood.put(AnimalConstants.AnimalParameters.DEER.getIcon(), 15);
         eatenFood.put(AnimalConstants.AnimalParameters.RABBIT.getIcon(), 60);
         eatenFood.put(AnimalConstants.AnimalParameters.MOUSE.getIcon(), 80);
@@ -31,12 +32,12 @@ public class Wolf extends Predator{
     }
     @Override
     public void reproduce() {
-        ConcurrentLinkedDeque allWolfesInLocation = getCurrentPosition().getRepresentatives().get(this.getIcon());
-        if ((allWolfesInLocation!=null) && (allWolfesInLocation.size() < this.getMaxRepresentatives()) ) {
-            Alive wolf = new Wolf(getCurrentPosition());
-            Thread thread = new Thread(wolf);
+        ConcurrentLinkedDeque allThisInLocation = getCurrentPosition().getRepresentatives().get(this.getIcon());
+        if ((allThisInLocation!=null) && (allThisInLocation.size() < this.getMaxRepresentatives())) {
+            Alive newbie = new Wolf(getCurrentPosition());
+            Thread thread = new Thread(newbie);
             thread.start();
-            System.out.println("New puppy! " + wolf.getIcon());
+            System.out.println("New " + this.getIcon() + " was born");
         }
     }
 }
