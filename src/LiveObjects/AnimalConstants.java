@@ -1,5 +1,6 @@
 package LiveObjects;
 
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.random.RandomGenerator;
 
@@ -54,9 +55,33 @@ public class AnimalConstants {
         public String getIcon(){
             return icon;
         }
+        public static ArrayList<AnimalParameters> predatorList(){
+            ArrayList list = new ArrayList();
+            list.add(WOLF);
+            list.add(SNAKE);
+            list.add(FOX);
+            list.add(BEAR);
+            list.add(EAGLE);
+            return list;
+        }
+        public static ArrayList<AnimalParameters> herbivoreList(){
+            ArrayList list = new ArrayList();
+            list.add(BULL);
+            list.add(DEER);
+            list.add(RABBIT);
+            list.add(MOUSE);
+            list.add(GOAT);
+            list.add(SHEEP);
+            list.add(HOG);
+            list.add(HORSE);
+            list.add(DUCK);
+            list.add(WORM);
+            return list;
+        }
     }
 
     public static final String [] images = {"\uD83D\uDC03","\uD83D\uDC3B","\uD83D\uDC0E","\uD83E\uDD8C","\uD83D\uDC17","\uD83D\uDC11","\uD83D\uDC10","\uD83D\uDC3A","\uD83D\uDC0D","\uD83E\uDD8A","\uD83E\uDD85","\uD83D\uDC07","\uD83E\uDD86","\uD83D\uDC01","\uD83D\uDC1B","\uD83C\uDF31"};
     public static RandomGenerator generator = new Random();
+
 
 }

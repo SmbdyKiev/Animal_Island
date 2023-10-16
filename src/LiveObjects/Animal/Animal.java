@@ -6,7 +6,7 @@ import LiveObjects.AnimalConstants;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedDeque;
-import java.util.random.RandomGenerator;
+
 
 public abstract class Animal extends Alive implements Movable<Cell> {
     private Map<String, Integer> eatenFoodPercents;
@@ -67,7 +67,8 @@ public abstract class Animal extends Alive implements Movable<Cell> {
             }
         }
         if (eatenFoodWeight < this.getMinFood()) {
-            this.die();
+            //this.die();
+            System.out.println(this.getIcon()+" still is hungry");
         }
         else {
             System.out.println(this.getIcon() + " not hungry anymore");
@@ -85,5 +86,6 @@ public abstract class Animal extends Alive implements Movable<Cell> {
                 System.out.println("was interrupted");
             }
         }
+        System.out.println(this.getIcon() + " died. R.I.P.");
     }
 }

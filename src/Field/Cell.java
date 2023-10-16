@@ -28,7 +28,6 @@ public class Cell {
                 ConcurrentLinkedDeque<Alive> alive = representatives.get(icon);
             if ((alive != null) && alive.contains(representative)) {
                 alive.remove(representative);
-                System.out.println(icon + " was removed from representatives");
                 if (!alive.isEmpty()) {representatives.put(icon, alive);}
                 else representatives.remove(icon);
             }
@@ -47,5 +46,16 @@ public class Cell {
             }
         }
         return resultString;
+    }
+
+    public Map<String, Integer> getPivot(){
+        Map<String,Integer> resultPivot = new HashMap<>();
+        Set<String> keys = representatives.keySet();
+        for (String key:keys) {
+            if (!representatives.get(key).isEmpty()) {
+                resultPivot.put(key,representatives.get(key).size());
+            }
+        }
+        return resultPivot;
     }
 }
